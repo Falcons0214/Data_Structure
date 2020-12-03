@@ -45,6 +45,7 @@ void find_node(Vertex v[10], int vertex, int *count)
     }
 }
 
+//判斷傳入的 v 是否為樹林 
 int isForest(Vertex v[10], int num)
 {
     int count = 0;
