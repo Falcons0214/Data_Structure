@@ -24,6 +24,11 @@ int find_root(int x, int node[10])
 
 int union_set(int set1, int set2, int node[10])  
 {
+	printf("%d %d %d %d\n", set1, set2, node[set1], node[set2]); // can't distinguish duplicate edge
+	if( node[set1] == set2 ){
+		printf("sss\n");
+		return 1;
+	}
     int root1 = find_root(set1, node);
     int root2 = find_root(set2, node);
     if( root1 == root2 ) // if root is equal -> have loop
@@ -38,7 +43,7 @@ int union_set(int set1, int set2, int node[10])
 //判斷傳入的 v 是否為樹林 
 int isForest(struct Vertex v[10])
 {
-    int node[10], i, h;
+    int node[10], i, h, flag = 1;
     for(i=0; i<10; i++)
         node[i] = -1; // init node
     for(i=0; i<10; i++)
@@ -48,9 +53,12 @@ int isForest(struct Vertex v[10])
             if( v[i].edgeList[h]->end[0]->id == v[i].edgeList[h]->end[1]->id )
                 return 0;
             if( v[i].edgeList[h]->end[0] == &v[i] )
-                union_set( v[i].edgeList[h]->end[0]->id - 1, v[i].edgeList[h]->end[1]->id - 1, node );
+                flag = union_set( v[i].edgeList[h]->end[0]->id - 1, v[i].edgeList[h]->end[1]->id - 1, node );
             else
-                union_set( v[i].edgeList[h]->end[1]->id - 1, v[i].edgeList[h]->end[0]->id - 1, node );
+                flag = union_set( v[i].edgeList[h]->end[0]->id - 1, v[i].edgeList[h]->end[1]->id - 1, node );
+			printf("%d\n", flag);
+			if( !flag )
+				return 0;
         }
     }
     return 1;
@@ -88,7 +96,7 @@ int main()
 	}
 	
 	//產生邊
-	k = rand() % 10 + 1; //邊的數量 
+	k = 5;//rand() % 10 + 1; //邊的數量 
 	for(j = 0;j < k;j ++)
 	{
 		//先產生兩個端點 
@@ -99,7 +107,6 @@ int main()
 		//兩個端點的連結 
 		e[j].end[0] = &v[i];
 		e[j].end[1] = &v[l];
-	printf("!!\n");
 		//在兩個端點加入邊 
 		v[i].edgeList[v[i].edgeCount] = &e[j];
 		v[i].edgeCount ++;
