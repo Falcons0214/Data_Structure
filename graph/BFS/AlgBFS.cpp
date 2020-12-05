@@ -164,6 +164,6 @@ int main()
     map.Connect('G', 'I', 8);
     map.Connect('H', 'G', 5);
 
-    map.BFS('C');
+    map.BFS('C'); // Start from 'C' vertex
     return 0;
 }
