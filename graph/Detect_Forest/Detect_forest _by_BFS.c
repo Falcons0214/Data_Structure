@@ -33,6 +33,8 @@ int isForest(Vertex v[10])
             {
                 used[edgecount++] = visited[top]->edgeList[j];
                 int flag = 1;
+                if( visited[top]->edgeList[j]->end[0] == visited[top]->edgeList[j]->end[1] )
+                    return 0;
                 if( visited[top]->edgeList[j]->end[0] == visited[top] )
                 {
                     for(int k=0; k<edgecount; k++)
