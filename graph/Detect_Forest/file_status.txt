@@ -1,0 +1,4 @@
+array -> for specail case
+DFS -> error
+BFS -> correct
+Set -> for special
