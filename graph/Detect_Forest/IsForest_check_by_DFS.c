@@ -16,17 +16,22 @@ struct Edge
 	int w;
 };
 
-int IsTree(struct Vertex v[10], int root)
+int IsTree(struct Vertex v[10], int root, struct Edge *used)
 {
-	if( v[root].status == 1 )
+	if( v[root].status )
 		return 0;
 	v[root].status = 1;
-	for(int i=0; i<v[i].edgeCount; i++)
+	for(int i=0; i<v[root].edgeCount; i++)
 	{
-		if( v[root].edgeList[i]->end[0] != &v[root] )
-			return IsTree(v, v[root].edgeList[i]->end[0]->id - 1);
-		else
-			return IsTree(v, v[root].edgeList[i]->end[1]->id - 1);
+		if( v[root].edgeList[i] != used )
+		{
+			if( v[root].edgeList[i]->end[0] != &v[root] )
+			{
+				return IsTree(v, v[root].edgeList[i]->end[0]->id - 1, v[root].edgeList[i]);
+			}else{  
+				return IsTree(v, v[root].edgeList[i]->end[1]->id - 1, v[root].edgeList[i]);
+			}
+		}
 	}
 	return 1;
 }
@@ -38,7 +43,7 @@ int isForest(struct Vertex v[10])
 	{
 		for(int h=0; h<10; h++)
 			v[h].status = 0;
-		if( !IsTree(v, v[i].id - 1) )
+		if( !IsTree(v, i, NULL) )
 			return 0;
 	}
 	return 1;
@@ -77,7 +82,7 @@ int main()
 	}
 	
 	//產生邊
-	k = rand() % 10 + 1; //邊的數量 
+	k = 5; //邊的數量 
 	for(j = 0;j < k;j ++)
 	{
 		//先產生兩個端點 
@@ -88,7 +93,6 @@ int main()
 		//兩個端點的連結 
 		e[j].end[0] = &v[i];
 		e[j].end[1] = &v[l];
-	printf("!!\n");
 		//在兩個端點加入邊 
 		v[i].edgeList[v[i].edgeCount] = &e[j];
 		v[i].edgeCount ++;

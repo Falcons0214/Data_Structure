@@ -1,4 +1,4 @@
-array -> for specail case
-DFS -> error
-BFS -> correct
+array -> correct
+DFS -> correct
+BFS -> error
 Set -> for special
