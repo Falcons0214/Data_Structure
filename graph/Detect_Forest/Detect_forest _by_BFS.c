@@ -21,14 +21,15 @@ struct Edge
 //判斷傳入的 v 是否為樹林 
 int isForest(Vertex v[10])
 {
-    Vertex *visited[10]; // record vertices it is visited
+    Vertex *visited[15]; // record vertices it is visited
     for(int i=0; i<10; i++)
     {   
         Edge *used[100]; // record edges it is uesed
         int bot = 0, top = 0, edgecount = 0;
-        visited[bot++] = &v[i];
+        visited[bot++] = &v[i]; 
         while(top != bot) // stop when queue is empty
         {
+            //printf("%d %d %d\n",i, top, bot);
             for(int j=0; j<visited[top]->edgeCount; j++) // visiting every edges
             {
                 used[edgecount++] = visited[top]->edgeList[j];
@@ -37,7 +38,7 @@ int isForest(Vertex v[10])
                     return 0;
                 if( visited[top]->edgeList[j]->end[0] == visited[top] )
                 {
-                    for(int k=0; k<edgecount; k++)
+                    for(int k=0; k<edgecount-1; k++)
                         if( used[k] == visited[top]->edgeList[j] )
                             flag = 0;
                     if(flag)
@@ -49,9 +50,9 @@ int isForest(Vertex v[10])
                         }
                         // if edge is not visited, add the vertex in the visieted array
                         visited[bot++] = visited[top]->edgeList[j]->end[1];
-                    }  
+                    }
                 }else{
-                    for(int k=0; k<edgecount; k++)
+                    for(int k=0; k<edgecount-1; k++)
                         if( used[k] == visited[top]->edgeList[j] )
                             flag = 0;
                     if(flag)
@@ -104,7 +105,7 @@ int main()
 		v[j].edgeCount = 0;// init edge count
 	}
 
-	k = 7;//rand() % 10 + 1; // number fo edge
+	k = rand() % 10 + 1; // number fo edge
 	for(j = 0;j < k;j ++)
 	{
 		// init two vertex
