@@ -13,7 +13,7 @@ struct Vertex
 struct Edge
 {
 	struct Vertex *end[2];
-	int w;
+	int w; 
 };
 
 void DFS(struct Vertex *v)
@@ -35,26 +35,19 @@ void BFS(struct Vertex *v)
 {
     struct Vertex *visited[100];
     int top = 0, bot = 0;
-    
-    visited[bot++] = v, visited[top]->status = 1;
+    visited[bot++] = v,  visited[top]->status = 1;
     while(top != bot)
     {
         printf("%d ", visited[top]->id);
         for(int i=0; i<visited[top]->edgeCount; i++)
         {
-            if( visited[top]->edgeList[i]->end[0] == visited[top]->edgeList[i]->end[1] ) // ignore self loop
+			int End = 0;
+			if( visited[top]->edgeList[i]->end[0] == visited[top])
+				End = 1;
+            if( visited[top]->edgeList[i]->end[End]->status != 0)
                 continue;
-            if( visited[top]->edgeList[i]->end[0] == visited[top]){
-                if( visited[top]->edgeList[i]->end[1]->status != 0)
-                    continue;
-                visited[top]->edgeList[i]->end[1]->status = 1;
-                visited[bot++] = visited[top]->edgeList[i]->end[1];
-            }else{
-                if( visited[top]->edgeList[i]->end[0]->status != 0)
-                    continue;
-                visited[top]->edgeList[i]->end[0]->status = 1;
-                visited[bot++] = visited[top]->edgeList[i]->end[0];
-            }
+            visited[top]->edgeList[i]->end[End]->status = 1;
+            visited[bot++] = visited[top]->edgeList[i]->end[End];
         }
         top ++;
     }
