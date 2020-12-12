@@ -159,7 +159,7 @@ void inorder(Heap heap, int index)
     if( !heap.root[index] )
         return ;
     inorder(heap, index*2);
-    printf("%c %d\n", ((stu*)(heap.root[index]))->ID, ((stu*)(heap.root[index]))->grade );
+    printf("%d ", ((stu*)(heap.root[index]))->grade );
     inorder(heap, index*2+1);
 }
 
@@ -167,7 +167,7 @@ void preorder(Heap heap, int index)
 {
     if( !heap.root[index] )
         return ;
-    printf("%c %d\n", ((stu*)(heap.root[index]))->ID, ((stu*)(heap.root[index]))->grade );
+    printf("%d ", ((stu*)(heap.root[index]))->grade );
     preorder(heap, index*2);
     preorder(heap, index*2+1);
 }
@@ -195,6 +195,13 @@ int main()
     
     inorder(class_heap.heap, 1);
     printf("\n");
+    preorder(class_heap.heap, 1);
+
+    void *root1 = DeQueue(&class_heap);
+
+    printf("\n");
+    printf("%d %c\n", ((stu*)(root1))->grade, ((stu*)(root1))->ID );
+
     preorder(class_heap.heap, 1);
 
     return 0;
