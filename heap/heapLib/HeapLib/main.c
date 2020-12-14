@@ -53,7 +53,7 @@ int main()
     class1[7].ID = 'H', class1[7].grade = 58;
     class1[8].ID = 'I', class1[8].grade = 67;
 
-    CreateHeap(&class_heap, MinHeap, sizeof(stu), 20, tt);
+    CreateHeap(&class_heap, MaxHeap, sizeof(stu), 20, tt);
 
     for(int i=0; i<9; i++)
         EnQueue(&class_heap, &class1[i]);
