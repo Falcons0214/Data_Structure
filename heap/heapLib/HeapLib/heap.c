@@ -46,8 +46,8 @@ static void HeapDown(PQheap *PQHeap, int index)
 void CreateHeap(PQheap *Heap, HeapClass type, int elementsize, int maxsize, int (*compare)(void *EA, void *EB))
 {
     Heap->type = type;
-    Heap->heap.elementNum = maxsize;
-    Heap->current_size = 1;
+    Heap->elementNum = maxsize;
+    Heap->heap.current_size = 1;
     Heap->compare = compare;
     Heap->elementSize = elementsize;
     Heap->heap.root = (void**)malloc(sizeof(void*) * (maxsize+1));
@@ -55,16 +55,21 @@ void CreateHeap(PQheap *Heap, HeapClass type, int elementsize, int maxsize, int 
         Heap->heap.root[i] = NULL;
 }
 
+int Current_Size(PQheap *Heap)
+{
+    return Heap->heap.current_size - 1;
+}
+
 int IsEmpty(PQheap *Heap)
 {
-    if( Heap->current_size == 1 )
+    if( Heap->heap.current_size == 1 )
         return 1;
     return 0;
 }
 
 int IsFull(PQheap *Heap)
 {
-    if( Heap->current_size == Heap->heap.elementNum )
+    if( Heap->heap.current_size == Heap->elementNum + 1 )
         return 1;
     return 0;
 }
@@ -73,9 +78,9 @@ int EnQueue(PQheap *PQHeap, void *element)
 {
     if( IsFull(PQHeap) )
         return 0;
-    PQHeap->heap.root[PQHeap->current_size] = element;
-    HeapUp(PQHeap, PQHeap->current_size);
-    PQHeap->current_size ++;
+    PQHeap->heap.root[PQHeap->heap.current_size] = element;
+    HeapUp(PQHeap, PQHeap->heap.current_size);
+    PQHeap->heap.current_size ++; 
     return 1;
 }
 
@@ -89,9 +94,9 @@ void *DeQueue(PQheap *PQHeap)
     Heap temp = PQHeap->heap;
     void *var = (void*)malloc(sizeof(char) * PQHeap->elementSize);
     memcpy(var, temp.root[1], PQHeap->elementSize);
-    PQHeap->current_size -= 1;
-    temp.root[1] = temp.root[PQHeap->current_size];
-    temp.root[PQHeap->current_size] = NULL; 
+    PQHeap->heap.current_size -= 1;
+    temp.root[1] = temp.root[PQHeap->heap.current_size];
+    temp.root[PQHeap->heap.current_size] = NULL; 
     HeapDown(PQHeap, 1);
     return var;
 }

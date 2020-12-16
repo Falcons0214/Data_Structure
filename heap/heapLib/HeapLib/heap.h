@@ -11,14 +11,14 @@ typedef enum {
 struct Heap
 {
     void **root;
-    int elementNum; 
+    int current_size; 
 };
 
 struct PQheap
 {
     HeapClass type;
     Heap heap;
-    int current_size, elementSize;
+    int elementNum, elementSize;
     int (*compare)(void *EA, void *EB);
 };
 
@@ -26,6 +26,7 @@ void CreateHeap(PQheap *Heap, HeapClass type, int elementsize, int maxsize, int 
 int IsEmpty(PQheap *Heap);
 int IsFull(PQheap *Heap);
 int EnQueue(PQheap *PQHeap, void *element);
+int Current_Size(PQheap *Heap);
 void *DeQueue(PQheap *PQHeap);
 
 #endif
