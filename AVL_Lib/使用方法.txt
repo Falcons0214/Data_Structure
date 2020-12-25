@@ -1,0 +1,25 @@
+void insert_node( 1, 2, 3 )
+1 跟節點的位址 ex. node *root,  insert_node(&root, )
+2 要插入節點的位址 ex. STD node1, insert_node(&root, &node1, )
+3 要用來比較的函式 ex. int (*cmp)(void*, void *) = &compare, insert_node(&root, &node1, cmp)
+
+
+再刪除前請先使用find_node找到要刪除的資料位址!!
+void Delete_node( 1, 2 )
+1 傳入要刪除資料的位址 ex. node *del, Delete_node(del, )
+2 傳入要刪除資料所在的樹根節點的位址 ex. node *root Delete_node(del, &root)
+
+node *find_node( 1, 2, 3 )
+1 傳入要刪除資料所在的樹根節點 ex. node *root, find_node(root, )
+2 傳入要尋找的資料位址 ex. STD node1, find_node(root, &node1, )
+3 傳入尋找函數 以下是函數範例
+int Find(void *A, void *B)
+{
+    if( ((STD*)A)->score == ((STD*)B)->score ) 如果有找到請return 3
+        return 3;
+    if( ((STD*)A)->score > ((STD*)B)->score ) 大於 2
+        return 2; 
+    else
+        return 1; 小於 1
+}
+int (*Find)(void *, void *) = &F, find_node(root, &node1, Find) 

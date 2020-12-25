@@ -12,7 +12,7 @@ struct node
 };
 
 void insert_node(node **root, void *element, int(*cmp)(void *, void *));
-void delete_node(node *root);
+void Delete_node(node *del, node **root);
 node *find_node(node *root, void *target, int(*check)(void *, void *));
 
 #endif
