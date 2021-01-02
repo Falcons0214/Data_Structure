@@ -65,7 +65,7 @@ static node *find_up(node *leaf)
     }
 }
 
-static void KeepBalance(node *leaf, node **root)
+static void Backward(node *leaf, node **root) // Backward
 {
     node *cur = find_up(leaf);
     if( !cur ) return;
@@ -87,6 +87,52 @@ static void KeepBalance(node *leaf, node **root)
             RightRotation(root_R, root);
             LeftRotation(cur, root);
         }
+    }
+}
+
+static int Max(node *A, node *B)
+{
+    if(A && B)
+        return ( (A->Hight) > (B->Hight) )? (A->Hight) : (B->Hight);
+    if(A)
+        return A->Hight;
+    if(B)
+        return B->Hight;
+    return 0;
+}
+
+static int getBalance(node * A)
+{
+    if( A == NULL )
+        return 0;
+    if( A->left && A->right )
+        return ((A->left->Hight) - (A->right->Hight));
+    if( A->left )
+        return A->left->Hight;
+    if( A->right )
+        return A->right->Hight;
+    return 0;
+}
+
+static void Forward(node *temp, node **root)
+{
+    if( !temp ) 
+        return;
+    Forward(temp->left, root);
+    Forward(temp->right, root);
+    temp->Hight = 1 + Max(temp->left, temp->right);
+
+    int balance = getBalance(temp);
+    //printf("ww %d\n", balance);
+    if(balance > 1 && temp->left->Hight > temp->right->Hight )
+    {
+        LeftRotation(temp->left , root);
+        RightRotation(temp , root);
+    }
+    if(balance < -1 && temp->left->Hight < temp->right->Hight ) 
+    {
+        RightRotation(temp->right , root);
+        LeftRotation(temp , root);
     }
 }
 
@@ -139,7 +185,8 @@ void insert_node(node **root, void *element, int(*cmp)(void *, void *))
                 cur->left = ((node*)element);
                 ((node*)element)->parent = cur;
                 UpdataHight(*root);
-                KeepBalance(cur->left, root);
+                Backward(cur->left, root);
+                Forward((*root), root);
                 break;
             }
             cur = cur->left;
@@ -149,7 +196,8 @@ void insert_node(node **root, void *element, int(*cmp)(void *, void *))
                 cur->right = ((node*)element);
                 ((node*)element)->parent = cur;
                 UpdataHight(*root);
-                KeepBalance(cur->right, root);
+                Backward(cur->right, root);
+                Forward((*root), root);
                 break;
             }
             cur = cur->right;
@@ -229,9 +277,10 @@ void Delete_node(node *del, node **root)
     }
     Delete(del, &leaf);
     UpdataHight(*root);
-    KeepBalance(leaf, root);
+    Backward(leaf, root);
+    Forward((*root), root);
 }
-
+ 
 node *find_node(node *root, void *element, int(*check)(void *, void *))
 {
     while(1)

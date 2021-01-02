@@ -8,7 +8,7 @@ struct node
     node *parent;
     node *left;
     node *right;
-    int Lefthigh, Righthigh;
+    int Lefthigh, Righthigh, Hight;
 };
 
 void insert_node(node **root, void *element, int(*cmp)(void *, void *));
